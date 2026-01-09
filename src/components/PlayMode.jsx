@@ -78,7 +78,10 @@ export function PlayMode({ onBack }) {
   const handleNextOpening = () => {
     const currentIndex = openingsData.openings.findIndex(o => o.id === selectedOpening?.id);
     const nextIndex = (currentIndex + 1) % openingsData.openings.length;
-    handleSelectOpening(openingsData.openings[nextIndex]);
+    // Preserve player color when going to next opening
+    setSelectedOpening(openingsData.openings[nextIndex]);
+    setShowHint(false);
+    reset();
   };
 
   const handleRandomOpening = () => {
