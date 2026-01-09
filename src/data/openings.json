@@ -1,0 +1,201 @@
+{
+  "openings": [
+    {
+      "id": "italian-game",
+      "name": "Italian Game",
+      "eco": "C50",
+      "moves": ["e4", "e5", "Nf3", "Nc6", "Bc4"],
+      "description": "A classical opening aiming at the vulnerable f7 square"
+    },
+    {
+      "id": "ruy-lopez",
+      "name": "Ruy Lopez",
+      "eco": "C60",
+      "moves": ["e4", "e5", "Nf3", "Nc6", "Bb5"],
+      "description": "One of the oldest and most respected openings in chess"
+    },
+    {
+      "id": "scotch-game",
+      "name": "Scotch Game",
+      "eco": "C45",
+      "moves": ["e4", "e5", "Nf3", "Nc6", "d4"],
+      "description": "An aggressive opening that opens the center early"
+    },
+    {
+      "id": "kings-gambit",
+      "name": "King's Gambit",
+      "eco": "C30",
+      "moves": ["e4", "e5", "f4"],
+      "description": "A romantic era gambit sacrificing a pawn for rapid development"
+    },
+    {
+      "id": "vienna-game",
+      "name": "Vienna Game",
+      "eco": "C25",
+      "moves": ["e4", "e5", "Nc3"],
+      "description": "A flexible opening preparing f4 while developing naturally"
+    },
+    {
+      "id": "sicilian-defense",
+      "name": "Sicilian Defense",
+      "eco": "B20",
+      "moves": ["e4", "c5"],
+      "description": "The most popular response to 1.e4 at all levels"
+    },
+    {
+      "id": "sicilian-najdorf",
+      "name": "Sicilian Najdorf",
+      "eco": "B90",
+      "moves": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6"],
+      "description": "The most complex and deeply analyzed opening in chess"
+    },
+    {
+      "id": "sicilian-dragon",
+      "name": "Sicilian Dragon",
+      "eco": "B70",
+      "moves": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6"],
+      "description": "A sharp variation with the fianchettoed bishop resembling a dragon"
+    },
+    {
+      "id": "french-defense",
+      "name": "French Defense",
+      "eco": "C00",
+      "moves": ["e4", "e6"],
+      "description": "A solid defense creating a strong pawn chain"
+    },
+    {
+      "id": "caro-kann",
+      "name": "Caro-Kann Defense",
+      "eco": "B10",
+      "moves": ["e4", "c6"],
+      "description": "A solid, reliable defense favored by positional players"
+    },
+    {
+      "id": "pirc-defense",
+      "name": "Pirc Defense",
+      "eco": "B07",
+      "moves": ["e4", "d6", "d4", "Nf6", "Nc3", "g6"],
+      "description": "A hypermodern defense allowing White to build a center"
+    },
+    {
+      "id": "queens-gambit",
+      "name": "Queen's Gambit",
+      "eco": "D06",
+      "moves": ["d4", "d5", "c4"],
+      "description": "The most popular queen pawn opening offering a pawn sacrifice"
+    },
+    {
+      "id": "queens-gambit-declined",
+      "name": "Queen's Gambit Declined",
+      "eco": "D30",
+      "moves": ["d4", "d5", "c4", "e6"],
+      "description": "A solid response declining the gambit pawn"
+    },
+    {
+      "id": "queens-gambit-accepted",
+      "name": "Queen's Gambit Accepted",
+      "eco": "D20",
+      "moves": ["d4", "d5", "c4", "dxc4"],
+      "description": "Accepting the pawn, planning to defend or give it back"
+    },
+    {
+      "id": "slav-defense",
+      "name": "Slav Defense",
+      "eco": "D10",
+      "moves": ["d4", "d5", "c4", "c6"],
+      "description": "A solid defense keeping the light-squared bishop active"
+    },
+    {
+      "id": "kings-indian",
+      "name": "King's Indian Defense",
+      "eco": "E60",
+      "moves": ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7"],
+      "description": "A hypermodern defense aiming for a kingside attack"
+    },
+    {
+      "id": "nimzo-indian",
+      "name": "Nimzo-Indian Defense",
+      "eco": "E20",
+      "moves": ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4"],
+      "description": "A highly respected defense pinning the knight"
+    },
+    {
+      "id": "grunfeld-defense",
+      "name": "Grünfeld Defense",
+      "eco": "D80",
+      "moves": ["d4", "Nf6", "c4", "g6", "Nc3", "d5"],
+      "description": "An aggressive defense striking at White's center immediately"
+    },
+    {
+      "id": "dutch-defense",
+      "name": "Dutch Defense",
+      "eco": "A80",
+      "moves": ["d4", "f5"],
+      "description": "An aggressive defense aiming for kingside attack"
+    },
+    {
+      "id": "london-system",
+      "name": "London System",
+      "eco": "D00",
+      "moves": ["d4", "d5", "Bf4"],
+      "description": "A solid system focusing on easy development"
+    },
+    {
+      "id": "catalan",
+      "name": "Catalan Opening",
+      "eco": "E00",
+      "moves": ["d4", "Nf6", "c4", "e6", "g3"],
+      "description": "A strong positional opening with fianchettoed bishop"
+    },
+    {
+      "id": "english-opening",
+      "name": "English Opening",
+      "eco": "A10",
+      "moves": ["c4"],
+      "description": "A flexible flank opening with many transposition possibilities"
+    },
+    {
+      "id": "reti-opening",
+      "name": "Réti Opening",
+      "eco": "A05",
+      "moves": ["Nf3", "d5", "c4"],
+      "description": "A hypermodern opening controlling the center from afar"
+    },
+    {
+      "id": "bird-opening",
+      "name": "Bird's Opening",
+      "eco": "A02",
+      "moves": ["f4"],
+      "description": "An aggressive flank opening aiming for kingside control"
+    },
+    {
+      "id": "scandinavian-defense",
+      "name": "Scandinavian Defense",
+      "eco": "B01",
+      "moves": ["e4", "d5"],
+      "description": "The oldest recorded opening, immediately challenging e4"
+    },
+    {
+      "id": "alekhine-defense",
+      "name": "Alekhine's Defense",
+      "eco": "B02",
+      "moves": ["e4", "Nf6"],
+      "description": "A provocative defense inviting White to advance pawns"
+    },
+    {
+      "id": "petrov-defense",
+      "name": "Petrov Defense",
+      "eco": "C42",
+      "moves": ["e4", "e5", "Nf3", "Nf6"],
+      "description": "A symmetrical defense leading to solid positions"
+    },
+    {
+      "id": "four-knights",
+      "name": "Four Knights Game",
+      "eco": "C47",
+      "moves": ["e4", "e5", "Nf3", "Nc6", "Nc3", "Nf6"],
+      "description": "A symmetrical opening often leading to equal positions"
+    }
+  ]
+}
+
