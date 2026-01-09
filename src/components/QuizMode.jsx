@@ -34,6 +34,7 @@ function calculatePositions(moves) {
 }
 
 export function QuizMode({ onBack }) {
+  const [boardOrientation, setBoardOrientation] = useState(null); // 'white' or 'black'
   const [currentOpening, setCurrentOpening] = useState(null);
   const [options, setOptions] = useState([]);
   const [positions, setPositions] = useState([]);
@@ -69,15 +70,16 @@ export function QuizMode({ onBack }) {
     setIsAnimating(true);
   }, []);
 
-  // Initialize first question
+  // Initialize first question when orientation is selected
   useEffect(() => {
+    if (!boardOrientation) return;
     generateQuestion();
     return () => {
       if (animationRef.current) {
         clearInterval(animationRef.current);
       }
     };
-  }, [generateQuestion]);
+  }, [generateQuestion, boardOrientation]);
 
   // Animate through positions using interval
   useEffect(() => {
@@ -152,14 +154,69 @@ export function QuizMode({ onBack }) {
 
   const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
 
+  // Board orientation selection screen
+  if (!boardOrientation) {
+    return (
+      <div className="min-h-screen p-8">
+        <div className="max-w-2xl mx-auto">
+          <button
+            onClick={onBack}
+            className="mb-6 text-[#a0a0a0] hover:text-[#d4a853] transition-colors flex items-center gap-2"
+          >
+            <span>←</span> Back to Menu
+          </button>
+
+          <div className="text-center mb-8">
+            <h1 className="font-serif text-4xl text-[#d4a853] mb-2">Identify the Opening</h1>
+            <p className="text-[#a0a0a0]">Watch the moves and identify the opening.</p>
+          </div>
+
+          <h2 className="font-serif text-2xl text-[#f5f5f5] text-center mb-8">Choose Board View</h2>
+
+          <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
+            <button
+              onClick={() => setBoardOrientation('white')}
+              className="group p-6 bg-[#1a1a1a] border border-[#333333] rounded-lg hover:border-[#d4a853] hover:bg-[#252525] transition-all"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-20 h-20 rounded-full bg-[#f5f5f5] flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform">
+                  ♔
+                </div>
+                <div className="text-center">
+                  <h3 className="font-serif text-xl text-[#f5f5f5] mb-1">White's View</h3>
+                  <p className="text-sm text-[#a0a0a0]">White pieces at bottom</p>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setBoardOrientation('black')}
+              className="group p-6 bg-[#1a1a1a] border border-[#333333] rounded-lg hover:border-[#d4a853] hover:bg-[#252525] transition-all"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-20 h-20 rounded-full bg-[#2a2a2a] flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform border border-[#444]">
+                  ♚
+                </div>
+                <div className="text-center">
+                  <h3 className="font-serif text-xl text-[#f5f5f5] mb-1">Black's View</h3>
+                  <p className="text-sm text-[#a0a0a0]">Black pieces at bottom</p>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         <button
-          onClick={onBack}
+          onClick={() => setBoardOrientation(null)}
           className="mb-6 text-[#a0a0a0] hover:text-[#d4a853] transition-colors flex items-center gap-2"
         >
-          <span>←</span> Back to Menu
+          <span>←</span> Back
         </button>
 
         <div className="flex items-center justify-between mb-8">
@@ -190,6 +247,7 @@ export function QuizMode({ onBack }) {
           <div className="flex-1">
             <ChessBoard
               fen={fen}
+              orientation={boardOrientation}
               interactive={false}
             />
             

@@ -29,7 +29,7 @@ export function ModeSelector({ onSelectMode }) {
         </div>
 
         {/* Mode cards */}
-        <div className="grid md:grid-cols-2 gap-6 fade-in stagger-2">
+        <div className="grid md:grid-cols-3 gap-6 fade-in stagger-2">
           {/* Play Mode */}
           <button
             onClick={() => onSelectMode('play')}
@@ -43,6 +43,23 @@ export function ModeSelector({ onSelectMode }) {
             </p>
             <div className="mt-4 flex items-center text-[#d4a853] text-sm opacity-0 group-hover:opacity-100 transition-opacity">
               <span>Start practicing</span>
+              <span className="ml-2">→</span>
+            </div>
+          </button>
+
+          {/* Open Play Mode */}
+          <button
+            onClick={() => onSelectMode('open')}
+            className="group p-8 bg-[#1a1a1a] border-2 border-[#333333] rounded-xl text-left hover:border-[#d4a853] hover:bg-[#1f1f1f] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#d4a853]/10"
+          >
+            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">♞</div>
+            <h2 className="font-serif text-2xl text-[#f5f5f5] mb-2">Open Play</h2>
+            <p className="text-[#a0a0a0] text-sm leading-relaxed">
+              Play any moves freely and discover which openings match.
+              See real-time which lines are still possible.
+            </p>
+            <div className="mt-4 flex items-center text-[#d4a853] text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              <span>Start exploring</span>
               <span className="ml-2">→</span>
             </div>
           </button>

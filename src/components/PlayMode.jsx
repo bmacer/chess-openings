@@ -6,8 +6,14 @@ import openingsData from '../data/openings.json';
 
 export function PlayMode({ onBack }) {
   const [selectedOpening, setSelectedOpening] = useState(null);
+  const [playerColor, setPlayerColor] = useState(null); // 'w', 'b', 'both-w', 'both-b'
   const [showHint, setShowHint] = useState(false);
   const [completedCount, setCompletedCount] = useState(0);
+
+  // Determine if playing both sides
+  const playingBothSides = playerColor === 'both-w' || playerColor === 'both-b';
+  // Board orientation
+  const boardOrientation = playerColor === 'b' || playerColor === 'both-b' ? 'black' : 'white';
 
   const { 
     fen, 
@@ -22,18 +28,29 @@ export function PlayMode({ onBack }) {
     reset 
   } = useChessGame(selectedOpening?.moves || []);
 
-  // Make computer moves (black's moves in the opening)
+  // Make computer moves (opponent's moves in the opening) - only when not playing both sides
   useEffect(() => {
-    if (!selectedOpening || isComplete) return;
+    if (!selectedOpening || isComplete || !playerColor || playingBothSides) return;
     
-    // If it's black's turn and we have an expected move, play it automatically
-    if (turn === 'b' && expectedNextMove) {
+    // If it's the computer's turn and we have an expected move, play it automatically
+    const computerColor = playerColor === 'w' ? 'b' : 'w';
+    if (turn === computerColor && expectedNextMove) {
       const timer = setTimeout(() => {
         makeMove(expectedNextMove);
       }, 400);
       return () => clearTimeout(timer);
     }
-  }, [turn, expectedNextMove, selectedOpening, isComplete, makeMove]);
+  }, [turn, expectedNextMove, selectedOpening, isComplete, makeMove, playerColor, playingBothSides]);
+
+  // If playing as black (single side), make the first move automatically
+  useEffect(() => {
+    if (selectedOpening && playerColor === 'b' && currentMoveIndex === 0 && expectedNextMove) {
+      const timer = setTimeout(() => {
+        makeMove(expectedNextMove);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedOpening, playerColor, currentMoveIndex, expectedNextMove, makeMove]);
 
   // Handle completion
   useEffect(() => {
@@ -48,7 +65,13 @@ export function PlayMode({ onBack }) {
 
   const handleSelectOpening = (opening) => {
     setSelectedOpening(opening);
+    setPlayerColor(null); // Require color selection
     setShowHint(false);
+    reset();
+  };
+
+  const handleSelectColor = (color) => {
+    setPlayerColor(color);
     reset();
   };
 
@@ -65,7 +88,9 @@ export function PlayMode({ onBack }) {
 
   // Get hint square (where the piece should move from)
   const getHintSquare = () => {
-    if (!expectedNextMove || turn !== 'w') return null;
+    if (!expectedNextMove) return null;
+    // In both-sides mode, always show hint; otherwise only on player's turn
+    if (!playingBothSides && turn !== playerColor) return null;
     
     try {
       const tempGame = new Chess(fen);
@@ -76,6 +101,9 @@ export function PlayMode({ onBack }) {
       return null;
     }
   };
+
+  // In both-sides mode, it's always the player's turn
+  const isPlayerTurn = playingBothSides || turn === playerColor;
 
   // Opening selection screen
   if (!selectedOpening) {
@@ -123,6 +151,103 @@ export function PlayMode({ onBack }) {
     );
   }
 
+  // Color selection screen
+  if (!playerColor) {
+    return (
+      <div className="min-h-screen p-8">
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={() => setSelectedOpening(null)}
+            className="mb-6 text-[#a0a0a0] hover:text-[#d4a853] transition-colors flex items-center gap-2"
+          >
+            <span>←</span> Back to Openings
+          </button>
+
+          <div className="text-center mb-8">
+            <h1 className="font-serif text-4xl text-[#d4a853] mb-2">{selectedOpening.name}</h1>
+            <p className="text-[#a0a0a0]">{selectedOpening.description}</p>
+          </div>
+
+          <h2 className="font-serif text-2xl text-[#f5f5f5] text-center mb-8">Choose Your Mode</h2>
+
+          <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
+            <button
+              onClick={() => handleSelectColor('w')}
+              className="group p-6 bg-[#1a1a1a] border border-[#333333] rounded-lg hover:border-[#d4a853] hover:bg-[#252525] transition-all"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-[#f5f5f5] flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
+                  ♔
+                </div>
+                <div className="text-center">
+                  <h3 className="font-serif text-lg text-[#f5f5f5] mb-1">Play as White</h3>
+                  <p className="text-xs text-[#a0a0a0]">Computer plays black</p>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => handleSelectColor('b')}
+              className="group p-6 bg-[#1a1a1a] border border-[#333333] rounded-lg hover:border-[#d4a853] hover:bg-[#252525] transition-all"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-[#2a2a2a] flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform border border-[#444]">
+                  ♚
+                </div>
+                <div className="text-center">
+                  <h3 className="font-serif text-lg text-[#f5f5f5] mb-1">Play as Black</h3>
+                  <p className="text-xs text-[#a0a0a0]">Computer plays white</p>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => handleSelectColor('both-w')}
+              className="group p-6 bg-[#1a1a1a] border border-[#333333] rounded-lg hover:border-[#d4a853] hover:bg-[#252525] transition-all"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex items-center gap-1">
+                  <div className="w-12 h-12 rounded-full bg-[#f5f5f5] flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                    ♔
+                  </div>
+                  <span className="text-[#666666] text-lg">+</span>
+                  <div className="w-12 h-12 rounded-full bg-[#2a2a2a] flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform border border-[#444]">
+                    ♚
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="font-serif text-lg text-[#f5f5f5] mb-1">Both Sides</h3>
+                  <p className="text-xs text-[#a0a0a0]">White's perspective</p>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => handleSelectColor('both-b')}
+              className="group p-6 bg-[#1a1a1a] border border-[#333333] rounded-lg hover:border-[#d4a853] hover:bg-[#252525] transition-all"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex items-center gap-1">
+                  <div className="w-12 h-12 rounded-full bg-[#2a2a2a] flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform border border-[#444]">
+                    ♚
+                  </div>
+                  <span className="text-[#666666] text-lg">+</span>
+                  <div className="w-12 h-12 rounded-full bg-[#f5f5f5] flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                    ♔
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="font-serif text-lg text-[#f5f5f5] mb-1">Both Sides</h3>
+                  <p className="text-xs text-[#a0a0a0]">Black's perspective</p>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Practice screen
   return (
     <div className="min-h-screen p-8">
@@ -141,7 +266,8 @@ export function PlayMode({ onBack }) {
               fen={fen}
               onMove={handleMove}
               lastMoveResult={lastMoveResult}
-              interactive={!isComplete && turn === 'w'}
+              orientation={boardOrientation}
+              interactive={!isComplete && isPlayerTurn}
               showHint={showHint}
               hintSquare={getHintSquare()}
             />
@@ -154,6 +280,24 @@ export function PlayMode({ onBack }) {
                 <div>
                   <h2 className="font-serif text-2xl text-[#d4a853]">{selectedOpening.name}</h2>
                   <span className="text-sm text-[#a0a0a0]">{selectedOpening.eco}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {playingBothSides ? (
+                    <>
+                      <div className="flex -space-x-1">
+                        <span className="w-3 h-3 rounded-full bg-[#f5f5f5]" />
+                        <span className="w-3 h-3 rounded-full bg-[#2a2a2a] border border-[#444]" />
+                      </div>
+                      <span className="text-sm text-[#a0a0a0]">Both</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className={`w-4 h-4 rounded-full ${playerColor === 'w' ? 'bg-[#f5f5f5]' : 'bg-[#2a2a2a] border border-[#444]'}`} />
+                      <span className="text-sm text-[#a0a0a0]">
+                        {playerColor === 'w' ? 'White' : 'Black'}
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
               
@@ -197,7 +341,7 @@ export function PlayMode({ onBack }) {
 
               {/* Actions */}
               <div className="space-y-3">
-                {!isComplete && turn === 'w' && (
+                {!isComplete && isPlayerTurn && (
                   <button
                     onClick={() => setShowHint(!showHint)}
                     className={`
